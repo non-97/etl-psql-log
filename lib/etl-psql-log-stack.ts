@@ -1,16 +1,18 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { LambdaConstruct } from "./construct/lambda-construct";
+import { EtlPsqlLogsProperty } from "../parameter/index";
+
+export interface EtlPsqlLogsStackProperty
+  extends cdk.StackProps,
+    EtlPsqlLogsProperty {}
 
 export class EtlPsqlLogStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: EtlPsqlLogsStackProperty) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'EtlPsqlLogQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const lambdaConstruct = new LambdaConstruct(this, "LambdaConstruct", {
+      ...props.logProperty,
+    });
   }
 }
